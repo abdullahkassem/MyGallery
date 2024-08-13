@@ -1,0 +1,54 @@
+$pressColor: #e0e0e056;
+$selectedColor: #e0e0e0;
+
+@mixin makeClickable {
+    &:active {
+        background-color: $pressColor;
+    }
+
+    &:hover {
+        background-color: $selectedColor;
+        cursor: pointer;
+    }
+}
+
+.galleryContainer {
+    display: grid;
+    grid-template-columns: 1fr 8fr 1fr;
+    align-items: center;
+    justify-items: center;
+    background-color: whitesmoke;
+    border-radius: 20px;
+    padding: 20px 0;
+}
+
+.galleryContainer .imageContainer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    column-gap: 10px;
+    min-width: 400px;
+}
+
+.imageContainer div.singleImg {
+    width: 100%;
+}
+
+.imageContainer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.SwitchingButton {
+    background-color: transparent;
+    border: none;
+    border-radius: 10%;
+    width: fit-content;
+    @include makeClickable;
+}
+
+.SwitchingImg {
+    width: 2.5rem;
+
+}
