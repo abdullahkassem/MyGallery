@@ -8,12 +8,21 @@ export default function SwitchImgButton({direction,setFirstImgInd,imagesLength=9
 
   let iconPath = errImg;
   let handler;
-  const clickHandlerIncrement = function(){
+  
+  const clickHandlerIncrement = function(event){
     setFirstImgInd((prev)=>{return(prev+1)%imagesLength});
+    const singleImgDivs = document.querySelectorAll(".imageContainer div.singleImg");
+    singleImgDivs.forEach((d)=>{
+      d.style.animation = "2s slideToRight forwards";
+    });
   }
 
   const clickHandlerDecrement = function(){
     setFirstImgInd((prev)=>{return(prev-1)%imagesLength});
+    const singleImgDivs = document.querySelectorAll(".imageContainer div.singleImg");
+    singleImgDivs.forEach((d)=>{
+      d.style.animation = "2s slideToLeft forwards";
+    });
   }
   
   if(direction == 'forwards'){

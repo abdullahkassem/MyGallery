@@ -32,14 +32,38 @@ $selectedColor: #e0e0e0;
 
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
+    -ms-overflow-style: none;
+    scroll-behavior: smooth;
 }
+
+.galleryContainer .imageContainer::-webkit-scrollbar {
+    display: none;
+}
+  
 
 .imageContainer div.singleImg {
     width: 100%;
-    flex: 1 0 300px;
+    flex: 1 0 40%;
     scroll-snap-align: start;
     scroll-margin: 5px;
 }
+
+@keyframes slideToRight {
+    from{
+        transform: translate(0%);
+    }to{
+        transform: translate(-100%);
+    }
+}
+
+@keyframes slideToLeft {
+    from{
+        transform: translate(0%);
+    }to{
+        transform: translate(100%);
+    }
+}
+
 
 .imageContainer img {
     width: 100%;

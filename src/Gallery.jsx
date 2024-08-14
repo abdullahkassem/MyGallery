@@ -7,7 +7,7 @@ import GalleryImg from './GalleryImg';
 export default function Gallery({ imgDirArr }) {
 
   const [firstImgInd, setFirstImgInd] = useState(0); // first to be shown
-
+  // console.log(firstImgInd);
   return (
     <div className='galleryContainer'>
       <SwitchImgButton direction={"backwards"} setFirstImgInd={setFirstImgInd} imagesLength={imgDirArr.length} />
