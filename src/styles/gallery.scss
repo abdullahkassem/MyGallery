@@ -12,6 +12,8 @@ $selectedColor: #e0e0e0;
     }
 }
 
+
+
 .galleryContainer {
     display: grid;
     grid-template-columns: 1fr 8fr 1fr;
@@ -34,6 +36,8 @@ $selectedColor: #e0e0e0;
     scroll-snap-type: x mandatory;
     -ms-overflow-style: none;
     scroll-behavior: smooth;
+
+    
 }
 
 .galleryContainer .imageContainer::-webkit-scrollbar {
@@ -50,9 +54,9 @@ $selectedColor: #e0e0e0;
 
 @keyframes slideToRight {
     from{
-        transform: translate(0%);
+        transform: translate(var(--CurrentPos));
     }to{
-        transform: translate(-100%);
+        transform: translate(var(--CurrentPos)-100%);
     }
 }
 

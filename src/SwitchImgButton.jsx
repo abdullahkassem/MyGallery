@@ -4,13 +4,13 @@ import forwardIcon from './assets/right-arrow.png'
 import backwardIcon from './assets/left-arrow.png'
 
 
-export default function SwitchImgButton({direction,setFirstImgInd,imagesLength=99}) {
+export default function SwitchImgButton({direction,firstImgInd,setFirstImgInd,imagesLength=99}) {
 
   let iconPath = errImg;
   let handler;
   
   const clickHandlerIncrement = function(event){
-    setFirstImgInd((prev)=>{return(prev+1)%imagesLength});
+    setFirstImgInd((prev)=>{return(prev+1)%imagesLength}); // increment state, so we can keep track of position
     const singleImgDivs = document.querySelectorAll(".imageContainer div.singleImg");
     singleImgDivs.forEach((d)=>{
       d.style.animation = "2s slideToRight forwards";

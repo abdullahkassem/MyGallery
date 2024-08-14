@@ -5,12 +5,12 @@ import GalleryImg from './GalleryImg';
 
 
 export default function Gallery({ imgDirArr }) {
-
+  imgDirArr = imgDirArr.concat(imgDirArr);
   const [firstImgInd, setFirstImgInd] = useState(0); // first to be shown
   // console.log(firstImgInd);
   return (
     <div className='galleryContainer'>
-      <SwitchImgButton direction={"backwards"} setFirstImgInd={setFirstImgInd} imagesLength={imgDirArr.length} />
+      <SwitchImgButton direction={"backwards"} firstImgInd={firstImgInd} setFirstImgInd={setFirstImgInd} imagesLength={imgDirArr.length} />
 
       <div className="imageContainer">
         {imgDirArr.map((image, index) => {
@@ -20,7 +20,7 @@ export default function Gallery({ imgDirArr }) {
         })}
       </div>
 
-      <SwitchImgButton direction={"forwards"} setFirstImgInd={setFirstImgInd} imagesLength={imgDirArr.length} />
+      <SwitchImgButton direction={"forwards"} firstImgInd={firstImgInd} setFirstImgInd={setFirstImgInd} imagesLength={imgDirArr.length} />
 
 
     </div>
