@@ -6,39 +6,14 @@ import GalleryImg from './GalleryImg';
 
 export default function Gallery({ imgDirArr }) {
 
-  
-  const [numOfDisplayImgs, setNumOfDisplayImgs] = useState(Math.min(3, imgDirArr.length));
-
-  // --> does not work as expected
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth <= 768) {
-        // console.log("tablet");
-        setNumOfDisplayImgs(2);
-      } else {
-        // console.log("desktop");
-        setNumOfDisplayImgs(3);
-      }
-    };
-
-    handleResize(); // called to change the size on website load up
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   const [firstImgInd, setFirstImgInd] = useState(0); // first to be shown
-  let displayImgs = getNextN(imgDirArr, firstImgInd, numOfDisplayImgs);
 
   return (
     <div className='galleryContainer'>
       <SwitchImgButton direction={"backwards"} setFirstImgInd={setFirstImgInd} imagesLength={imgDirArr.length} />
 
       <div className="imageContainer">
-        {displayImgs.map((image, index) => {
+        {imgDirArr.map((image, index) => {
           return (
             <GalleryImg key={index} imgLink={image} />
           )
