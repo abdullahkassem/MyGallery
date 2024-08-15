@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import SwitchImgButton from './SwitchImgButton'
-import './styles/Gallery.scss';
+import './styles/gallery.scss';
 import GalleryImg from './GalleryImg';
 
 
 export default function Gallery({ imgDirArr }) {
-  imgDirArr = imgDirArr.concat(imgDirArr);
+  // imgDirArr = imgDirArr.concat(imgDirArr);
   const [curImgIdx, setcurImgIdx] = useState(0); // first to be shown
   console.log("curImgIndex:",curImgIdx);
   return (
-    <div className='galleryContainer'>
+    <div className='galleryContainer' >
       <SwitchImgButton direction={"backwards"} curImgIdx={curImgIdx} setcurImgIdx={setcurImgIdx} imagesLength={imgDirArr.length} />
 
       <div className="imageContainer">
@@ -25,19 +25,4 @@ export default function Gallery({ imgDirArr }) {
 
     </div>
   )
-}
-
-
-
-function getNextN(array, start, N) {
-  const length = array.length;
-  const result = [];
-
-  for (let i = 0; i < N; i++) {
-    let index = (start + i) % length;
-    if (index < 0) index = length + index;
-    result.push(array[index]);
-  }
-
-  return result;
 }
