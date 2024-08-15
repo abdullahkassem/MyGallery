@@ -30,8 +30,6 @@ $selectedColor: #e0e0e0;
     display: flex;
     justify-content: first baseline;
     width: 100%;
-    column-gap: 10px;
-
 
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
@@ -50,22 +48,7 @@ $selectedColor: #e0e0e0;
     flex: 1 0 100%;
     scroll-snap-align: start;
     scroll-margin: 5px;
-}
-
-@keyframes slideToRight {
-    from{
-        transform: translate(0%);
-    }to{
-        transform: translate(-100%);
-    }
-}
-
-@keyframes slideToLeft {
-    from{
-        transform: translate(0%);
-    }to{
-        transform: translate(100%);
-    }
+    transition: transform 1.5s ease;
 }
 
 
