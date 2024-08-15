@@ -16,28 +16,28 @@ $selectedColor: #e0e0e0;
 
 .galleryContainer {
     display: grid;
-    grid-template-columns: 1fr 8fr 1fr;
+    grid-template-columns: 0.5fr 9fr 0.5fr;
     align-items: center;
     justify-items: center;
     background-color: whitesmoke;
     border-radius: 20px;
     padding: 20px 0;
+    width: 600px;
+    margin: 0 auto;;
 }
 
 .galleryContainer .imageContainer {
     display: flex;
-    justify-content: center;
+    justify-content: first baseline;
     width: 100%;
-    // max-width: 80%;
-    // min-width: 400px;
     column-gap: 10px;
+
 
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
     -ms-overflow-style: none;
     scroll-behavior: smooth;
 
-    
 }
 
 .galleryContainer .imageContainer::-webkit-scrollbar {
@@ -47,7 +47,7 @@ $selectedColor: #e0e0e0;
 
 .imageContainer div.singleImg {
     width: 100%;
-    flex: 1 0 40%;
+    flex: 1 0 100%;
     scroll-snap-align: start;
     scroll-margin: 5px;
 }
