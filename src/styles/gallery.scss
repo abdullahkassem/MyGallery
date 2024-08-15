@@ -54,9 +54,9 @@ $selectedColor: #e0e0e0;
 
 @keyframes slideToRight {
     from{
-        transform: translate(var(--CurrentPos));
+        transform: translate(0%);
     }to{
-        transform: translate(var(--CurrentPos)-100%);
+        transform: translate(-100%);
     }
 }
 
