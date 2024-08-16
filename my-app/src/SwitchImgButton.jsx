@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import crossSign from './assets/cross-sign.png';
 import rightArrow from './assets/right-arrow.png';
 import leftArrow from './assets/left-arrow.png';
@@ -7,7 +7,7 @@ import leftArrow from './assets/left-arrow.png';
 export default function SwitchImgButton({ direction, curImgIdx, setcurImgIdx, imagesLength = 99 }) {
 
   let iconPath = crossSign;
-  let handler;
+  let handler = function() {console.log("Wrong direction used.")};
 
 
   const clickHandlerIncrement = function (event) {
@@ -24,13 +24,13 @@ export default function SwitchImgButton({ direction, curImgIdx, setcurImgIdx, im
     const singleImgDivs = document.querySelectorAll(".imageContainer div.singleImg");
     singleImgDivs.forEach((img)=>{
       img.style = `transform: translate(${-100*(curImgIdx)+100}%)`;
-    })
+    }) 
   }
 
-  if (direction == 'forwards') {
+  if (direction === 'forwards') {
     iconPath = rightArrow;
     handler = clickHandlerIncrement;
-  } else if (direction == 'backwards') {
+  } else if (direction === 'backwards') {
     iconPath = leftArrow;
     handler = clickHandlerDecrement;
   }

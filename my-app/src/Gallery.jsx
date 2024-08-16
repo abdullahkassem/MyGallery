@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import SwitchImgButton from './SwitchImgButton'
 import './styles/gallery.scss';
 import GalleryImg from './GalleryImg';
+
 
 
 export default function Gallery({ imgDirArr }) {
@@ -15,7 +16,7 @@ export default function Gallery({ imgDirArr }) {
       <div className="imageContainer">
         {imgDirArr.map((image, index) => {
           return (
-            <GalleryImg key={index} imgLink={image} />
+            <GalleryImg key={index} img={image} />
           )
         })}
       </div>

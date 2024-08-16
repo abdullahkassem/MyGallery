@@ -4,6 +4,8 @@ import '@testing-library/jest-dom/extend-expect';
 import SwitchImgButton from './SwitchImgButton';
 import leftArr from './assets/left-arrow.png';
 import rightArr from './assets/right-arrow.png';
+import crossSign from './assets/cross-sign.png';
+
 
 
 describe('Button Component', () => {
@@ -28,6 +30,20 @@ describe('Button Component', () => {
         const altText = 'direction signs';
 
         render(<SwitchImgButton direction="backwards" curImgIdx={0} setcurImgIdx={setcurImgIdxMock} />);
+
+        // Check if the image is rendered
+        const imgElement = screen.getByAltText(altText);
+        expect(imgElement).toBeInTheDocument();
+        expect(imgElement).toHaveAttribute('src', imageSrc);
+
+    });
+
+    test('renders a button with invalid direction value', () => {
+        const handleClick = jest.fn();
+        const imageSrc = crossSign;
+        const altText = 'direction signs';
+
+        render(<SwitchImgButton direction="gibberish" curImgIdx={0} setcurImgIdx={setcurImgIdxMock} />);
 
         // Check if the image is rendered
         const imgElement = screen.getByAltText(altText);
