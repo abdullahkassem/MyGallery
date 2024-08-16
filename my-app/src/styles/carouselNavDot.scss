@@ -1,0 +1,10 @@
+.NavDotsContainer{
+    display: flex;
+    position: absolute;
+    bottom: 10%;
+}
+
+.NavDotsContainer svg{
+    flex: auto;
+    transition: r 2s ease; 
+}

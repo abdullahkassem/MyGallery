@@ -12,8 +12,6 @@ $selectedColor: #e0e0e0;
     }
 }
 
-
-
 .galleryContainer {
     display: grid;
     grid-template-columns: 0.5fr 9fr 0.5fr;
@@ -24,6 +22,7 @@ $selectedColor: #e0e0e0;
     padding: 20px 0;
     width: 600px;
     margin: 0 auto;;
+    position: relative;
 }
 
 .galleryContainer .imageContainer {
