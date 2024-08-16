@@ -13,10 +13,6 @@ export default function SwitchImgButton({ direction, curImgIdx, setcurImgIdx, im
   const clickHandlerIncrement = function (event) {
     if (curImgIdx < (imagesLength - 1)) {
       setcurImgIdx((prev) => { return (prev + 1) % (imagesLength) }); // increment state, so we can keep track of position
-      const singleImgDivs = document.querySelectorAll(".imageContainer div.singleImg");
-      singleImgDivs.forEach((img) => {
-        img.style = `transform: translate(${-100 * (curImgIdx + 1)}%)`;
-      })
     }else {
       console.log("outofBounds");
     }
@@ -26,10 +22,6 @@ export default function SwitchImgButton({ direction, curImgIdx, setcurImgIdx, im
   const clickHandlerDecrement = function () {
     if (curImgIdx > 0) {
       setcurImgIdx((prev) => { return (prev - 1) % (imagesLength) });
-      const singleImgDivs = document.querySelectorAll(".imageContainer div.singleImg");
-      singleImgDivs.forEach((img) => {
-        img.style = `transform: translate(${-100 * (curImgIdx) + 100}%)`;
-      });
     } else {
       console.log("outofBounds");
     }
