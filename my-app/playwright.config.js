@@ -1,7 +1,5 @@
 const { defineConfig } = require('@playwright/test');
 
-console.log('Playwright configuration file loaded.');
-
 module.exports = defineConfig({
   testDir: './tests',  // Specify the directory for E2E tests
   use: {

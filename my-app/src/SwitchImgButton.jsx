@@ -7,24 +7,32 @@ import leftArrow from './assets/left-arrow.png';
 export default function SwitchImgButton({ direction, curImgIdx, setcurImgIdx, imagesLength = 99 }) {
 
   let iconPath = crossSign;
-  let handler = function() {console.log("Wrong direction used.")};
+  let handler = function () { console.log("Wrong direction used.") };
 
 
   const clickHandlerIncrement = function (event) {
-    setcurImgIdx((prev) => { return (prev + 1) % imagesLength }); // increment state, so we can keep track of position
-    const singleImgDivs = document.querySelectorAll(".imageContainer div.singleImg");
-    singleImgDivs.forEach((img)=>{
-      img.style = `transform: translate(${-100*(curImgIdx+1)}%)`;
-    })
+    if (curImgIdx < (imagesLength - 1)) {
+      setcurImgIdx((prev) => { return (prev + 1) % (imagesLength) }); // increment state, so we can keep track of position
+      const singleImgDivs = document.querySelectorAll(".imageContainer div.singleImg");
+      singleImgDivs.forEach((img) => {
+        img.style = `transform: translate(${-100 * (curImgIdx + 1)}%)`;
+      })
+    }else {
+      console.log("outofBounds");
+    }
 
   }
 
   const clickHandlerDecrement = function () {
-    setcurImgIdx((prev) => { return (prev - 1) % imagesLength });
-    const singleImgDivs = document.querySelectorAll(".imageContainer div.singleImg");
-    singleImgDivs.forEach((img)=>{
-      img.style = `transform: translate(${-100*(curImgIdx)+100}%)`;
-    }) 
+    if (curImgIdx > 0) {
+      setcurImgIdx((prev) => { return (prev - 1) % (imagesLength) });
+      const singleImgDivs = document.querySelectorAll(".imageContainer div.singleImg");
+      singleImgDivs.forEach((img) => {
+        img.style = `transform: translate(${-100 * (curImgIdx) + 100}%)`;
+      });
+    } else {
+      console.log("outofBounds");
+    }
   }
 
   if (direction === 'forwards') {
