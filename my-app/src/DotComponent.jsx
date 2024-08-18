@@ -1,18 +1,19 @@
 import * as React from "react";
 
+
 const DotComponenet = ({ w = 20, h = 20, rad = 5,ind ,curImgIdx, setcurImgIdx }) => {
   
   const dotClickHandler = function () {
 
     setcurImgIdx(ind); //update current index
-
-    console.log("Dot pressed.")
-    console.log("ind passed is ",ind)
     const numOfMoves = (ind-curImgIdx); // calculate the numer of moves left or right. if +ve need to move forwards and vice versa
-
+    if(numOfMoves > 1){
+      console.log('Oh oh');
+      
+    }
     const singleImgDivs = document.querySelectorAll(".imageContainer div.singleImg");
     singleImgDivs.forEach((img) => {
-      img.style = `transform: translate(${-100 * (numOfMoves)}%)`;
+      img.style.transform = `translate(${-100 * (numOfMoves)}%)`;
     })
 
   }

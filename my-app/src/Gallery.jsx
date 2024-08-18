@@ -7,21 +7,22 @@ import CarouselNavDots from './CarouselNavDots';
 
 
 export default function Gallery({ imgDirArr }) {
-  // imgDirArr = imgDirArr.concat(imgDirArr);
-  const [curImgIdx, setcurImgIdx] = useState(0); // first to be shown
-  // console.log("curImgIndex:", curImgIdx);
+  const [curImgIdx, setcurImgIdx] = useState(0); // state that tracks the image displayed.
+  const [moveImages,setMoveImages] = useState(false); // will be set false when we do not want for automatic scrolling. 
+
 
   const imageContRef = useRef(null);
 
 
   useEffect(() => {
     const handleScroll = () => {
-      if (imageContRef.current) {
-        const { scrollLeft, offsetWidth } = imageContRef.current;
-        // console.log({ scrollLeft, offsetWidth });
-        const index = Math.floor(scrollLeft / (offsetWidth - 20)); // I think A better option would be to compare an image posioton to its original position.
-        setcurImgIdx(() => index);
-        // console.log("scrolling has happened by ", index, " images");
+      const index = calcCurrIndex(imageContRef);
+      if(index !== null){
+        if (curImgIdx !== index) {
+          console.log("image scrolled will change state.");
+          setMoveImages(false);
+          setcurImgIdx(() => index);
+        }
       }
     };
 
@@ -34,33 +35,37 @@ export default function Gallery({ imgDirArr }) {
         carousel.removeEventListener('scroll', handleScroll);
       }
     };
-  }, []);
+  }, [curImgIdx]);
 
-  useEffect(() => {
-    // if state changed and not in correct position move images.
 
-    const childrenArr = Array.from(imageContRef.current.children);
-    // check translate value of 1st picture.
-    const first = childrenArr[0];
-    const style = window.getComputedStyle(first);
-    const transform = style.transform;
-    const matrixValues = transform.replace('matrix(', '').replace(')', '').split(', ');
 
-    console.log(transform);
-    const [a, b, c, d, e, f] = matrixValues.map(Number);
-    let calculatedPos = Math.round(-e / first.offsetWidth);
+//Automatic scrolling. 
+  useEffect(() => { // Whenever curImgIdx changes, will scroll images.
 
-    console.log(`${-e} / ${first.offsetWidth}`)
+    // if(moveImages === false){
+    //   setMoveImages(true);
+    //   return;
+    // }
 
-    console.log("calculatedPos rounded: ",calculatedPos," orig: ",-e / first.offsetWidth);
-    console.log("curImgIdx: ",curImgIdx);
-    
-    if(isNaN(calculatedPos))
-      calculatedPos=0;
+    const calculatedPos = calcCurrIndex(imageContRef);
 
-    if(calculatedPos != curImgIdx){
-      childrenArr.forEach((img) => {
-        img.style = `transform: translate(${-100 * (curImgIdx )}%)`;
+    const ImagesArr = Array.from(imageContRef.current.children);
+    // // check translate value of 1st picture, to know which image is displayed.
+    // const firstImage = ImagesArr[0];
+    // const firstImgStyle = window.getComputedStyle(firstImage);
+    // // parsing string to get translateX value
+    // const transform = firstImgStyle.transform;
+    // const matrixValues = transform.replace('matrix(', '').replace(')', '').split(', ');
+    // const translateX = matrixValues.map(Number)[5];
+
+    // let calculatedPos = Math.round(-translateX / firstImage.offsetWidth);
+
+    // if (isNaN(calculatedPos))
+    //   calculatedPos = 0;
+
+    if (calculatedPos !== curImgIdx) {
+      ImagesArr.forEach((img) => {
+        img.style.transform = `translate(${-100 * (curImgIdx)}%)`;
       })
     }
   }, [curImgIdx]);
@@ -69,19 +74,28 @@ export default function Gallery({ imgDirArr }) {
     <div className='galleryContainer' >
       <SwitchImgButton direction={"backwards"} curImgIdx={curImgIdx} setcurImgIdx={setcurImgIdx} imagesLength={imgDirArr.length} />
 
-      <div ref={imageContRef} className="imageContainer">
+      <div ref={imageContRef} className="imageContainer" >
         {imgDirArr.map((image, index) => {
           return (
-            <GalleryImg key={index} img={image} />
+            <GalleryImg key={index} img={image} ord={index} />
           )
         })}
       </div>
 
       <SwitchImgButton direction={"forwards"} curImgIdx={curImgIdx} setcurImgIdx={setcurImgIdx} imagesLength={imgDirArr.length} />
-
       <CarouselNavDots curImgIdx={curImgIdx} setcurImgIdx={setcurImgIdx} imagesLength={imgDirArr.length} />
 
 
     </div>
   )
+}
+
+function calcCurrIndex(imageContRef){
+  if (imageContRef.current) {
+
+    const { scrollLeft, offsetWidth } = imageContRef.current;
+    const index = Math.round(scrollLeft / (offsetWidth - 1)); // I think A better option would be to compare an image posioton to its original position.
+    return index;
+  }
+  return null;
 }
