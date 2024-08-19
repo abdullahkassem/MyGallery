@@ -11,7 +11,6 @@ export default function Gallery({ imgDirArr }) {
   const [curImgIdx, setcurImgIdx] = useState(0); // state that tracks the image displayed.
   const [moveBy, setMoveBy] = useState(0); // 1 is forwards, -1 is backwards
 
-  // console.log(curImgIdx)
 
   const imageContRef = useRef(null);
   const galleryRef = useRef(null);
@@ -24,7 +23,7 @@ export default function Gallery({ imgDirArr }) {
 
   useEffect(() => {
     const ImagesArr = Array.from(imageContRef.current.children);
-    positionImages(ImagesArr, 0)
+    positionImages(ImagesArr, 0);
   }, [])
 
   return (
@@ -52,14 +51,18 @@ export function translateImages(gallery, curImgIdx, setcurImgIdx, moveBy, setMov
   setcurImgIdx(newCurrent);
   setMoveBy(0); //since we already handled the move we could reset it to zero
   const imgArray = Array.from( gallery.querySelectorAll('.imageContainer div') );
-
   positionImages(imgArray,newCurrent);
+
+  imgArray.forEach((img,index)=>{
+    if(index !== newCurrent && index !== curImgIdx){
+      img.style.zIndex = 1;
+    }
+  })
 
 }
 
 
 function positionImages(ImagesArr, curImgIdx) {
-  console.log('Positioning images, current index is ', curImgIdx);
   ImagesArr.forEach((img, index) => {
     if (index < curImgIdx) {
       img.style.transform = 'translate(-100%)';
