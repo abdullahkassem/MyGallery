@@ -4,15 +4,14 @@ import rightArrow from './assets/right-arrow.png';
 import leftArrow from './assets/left-arrow.png';
 
 
-export default function SwitchImgButton({ direction, curImgIdx, setcurImgIdx, imagesLength = 99 , setMoveImages}) {
+export default function SwitchImgButton({ direction, curImgIdx, setcurImgIdx, imagesLength = 99 , setMoveBy}) {
 
   let iconPath = crossSign;
   let handler = function () { console.log("Wrong direction used.") };
 
   const clickHandlerIncrement = function (event) {
-    setMoveImages(true);
     if (curImgIdx < (imagesLength - 1)) {
-      setcurImgIdx((prev) => { return (prev + 1) % (imagesLength) }); // increment state, so we can keep track of position
+      setMoveBy(1); // increment state, so we can keep track of position
     }else {
       console.log("outofBounds");
     }
@@ -20,9 +19,8 @@ export default function SwitchImgButton({ direction, curImgIdx, setcurImgIdx, im
   }
 
   const clickHandlerDecrement = function () {
-    setMoveImages(true);
     if (curImgIdx > 0) {
-      setcurImgIdx((prev) => { return (prev - 1) % (imagesLength) });
+      setMoveBy(-1);
     } else {
       console.log("outofBounds");
     }

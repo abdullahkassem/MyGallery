@@ -1,7 +1,7 @@
 import * as React from "react";
 
 
-const DotComponenet = ({ w = 20, h = 20, rad = 5, ind, curImgIdx, setcurImgIdx, setMoveImages }) => {
+const DotComponenet = ({ w = 20, h = 20, rad = 5, ind, curImgIdx, setcurImgIdx, setMoveBy }) => {
 
   const dotClickHandler = function () {
     const numOfMoves = (ind - curImgIdx); // calculate the numer of moves left or right. if +ve need to move forwards and vice versa
@@ -25,9 +25,6 @@ const DotComponenet = ({ w = 20, h = 20, rad = 5, ind, curImgIdx, setcurImgIdx, 
             const origTransition = 'transform 1.5s ease;';
             img.style.transition = 'none';
             img.style.transform = `translate(${-100 * (ind)}%)`;
-            // console.log(origTransition);
-            // img.style.transition = origTransition;
-            // img.style.translate = `${-100 * (ind)}% 0`;
           })
         });
 
@@ -36,13 +33,11 @@ const DotComponenet = ({ w = 20, h = 20, rad = 5, ind, curImgIdx, setcurImgIdx, 
 
 
       }
-      setMoveImages(false);
-      setcurImgIdx(ind);
+      setMoveBy(ind);
 
     } else {
       // one step move
-      setMoveImages(true);
-      setcurImgIdx(ind); //update current index
+      setMoveBy(ind); //update current index
 
     }
 

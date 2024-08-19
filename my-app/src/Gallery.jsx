@@ -9,7 +9,7 @@ import CarouselNavDots from './CarouselNavDots';
 
 export default function Gallery({ imgDirArr }) {
   const [curImgIdx, setcurImgIdx] = useState(0); // state that tracks the image displayed.
-  const [moveImages, setMoveImages] = useState(false); // will be set false when we do not want for automatic scrolling. 
+  const [moveBy, setMoveBy] = useState(0); // 1 is forwards, -1 is backwards
 
   // console.log(curImgIdx)
 
@@ -18,47 +18,36 @@ export default function Gallery({ imgDirArr }) {
   let startingX = 616;
 
 
-  if (moveImages)
-    translateImages(galleryRef.current, curImgIdx)
+  if (moveBy !== 0)
+    translateImages(galleryRef.current, curImgIdx, setcurImgIdx, moveBy, setMoveBy)
 
   useEffect(() => {
-    const firstImage = Array.from(imageContRef.current.children)[0];
-    const { x } = firstImage.getBoundingClientRect();
-    startingX = x;
-    // console.log('starting is ',x);
+    const ImagesArr = Array.from(imageContRef.current.children);
+    positionImages(ImagesArr, curImgIdx)
   }, [])
 
+  // useEffect(() => {
+  //   // Adding a lister for transition finish
+  //   const transitionedHandler = () => {
+  //     // remove transforms 
+  //     // elements before curImgIdx are leftSideImg, current image is currentImg, ....
+  //     const ImagesArr = Array.from(imageContRef.current.children);
+  //     positionImages(ImagesArr, curImgIdx);
+  //   };
 
-  useEffect(() => {
-    const handleScroll = () => {
+  //   imageContRef.current.addEventListener('transitionend', transitionedHandler);
 
-      const index = calcIndexPosition(imageContRef.current, startingX);
-      // console.log(calcIndexPosition(imageContRef.current));
-      if (index !== null && curImgIdx !== index) {
-        console.log("image scrolled will change state.");
-        setMoveImages(false);
-        setcurImgIdx(() => index);
 
-      }
+  //   return ()=>{
+  //     imageContRef.current.addEventListener('transitionend',transitionedHandler);
+  //   }
+  // }, [curImgIdx])
 
-    };
-
-    const imageCont = imageContRef.current; // dom element 
-
-    imageCont.addEventListener('scroll', handleScroll);
-
-    // Clean up function
-    return () => {
-      if (imageCont) {
-        imageCont.removeEventListener('scroll', handleScroll);
-      }
-    };
-  }, [curImgIdx]);
 
 
   return (
     <div className='galleryContainer' ref={galleryRef}>
-      <SwitchImgButton direction={"backwards"} curImgIdx={curImgIdx} setcurImgIdx={setcurImgIdx} imagesLength={imgDirArr.length} setMoveImages={setMoveImages} />
+      <SwitchImgButton direction={"backwards"} curImgIdx={curImgIdx} setcurImgIdx={setcurImgIdx} imagesLength={imgDirArr.length} setMoveBy={setMoveBy} />
 
       <div ref={imageContRef} className="imageContainer" >
         {imgDirArr.map((image, index) => {
@@ -68,59 +57,83 @@ export default function Gallery({ imgDirArr }) {
         })}
       </div>
 
-      <SwitchImgButton direction={"forwards"} curImgIdx={curImgIdx} setcurImgIdx={setcurImgIdx} imagesLength={imgDirArr.length} setMoveImages={setMoveImages} />
-      <CarouselNavDots curImgIdx={curImgIdx} setcurImgIdx={setcurImgIdx} imagesLength={imgDirArr.length} setMoveImages={setMoveImages} />
+      <SwitchImgButton direction={"forwards"} curImgIdx={curImgIdx} setcurImgIdx={setcurImgIdx} imagesLength={imgDirArr.length} setMoveBy={setMoveBy} />
+      <CarouselNavDots curImgIdx={curImgIdx} setcurImgIdx={setcurImgIdx} imagesLength={imgDirArr.length} setMoveBy={setMoveBy} />
 
 
     </div>
   )
 }
 
-export function translateImages(gallery, indexToShow) {
-  if (gallery !== null) {
+export function translateImages(gallery, curImgIdx, setcurImgIdx, moveBy, setMoveBy) {
+  // if index is higher, move to the right then scroll forwards
+  // Make curImgIdx be current.
+
+  if (gallery !== null && moveBy !== 0) {
+    setMoveBy(0);
+    setcurImgIdx((prev) => prev + moveBy);
+    const isForwards = (moveBy > 0) ? 1 : -1;
+    console.log(`current index is ${curImgIdx} want to move in the ${(moveBy > 0 ? 'forwards' : 'backwards')} next index is ${curImgIdx + moveBy}`)
     const ImgContainer = gallery.querySelector("div.imageContainer");
     const ImagesArr = Array.from(ImgContainer.children);
 
-    ImagesArr.forEach((img) => {
-      img.style.transform = `translate(${-100 * (indexToShow)}%)`;
-    })
+    const curImg = ImagesArr[curImgIdx];
+    const nextImage = ImagesArr[curImgIdx + moveBy];
+
+    console.log('curImg is', curImg)
+    console.log('nextImage is', nextImage)
+
+    if (curImgIdx === 0 ){
+      console.log('first image')
+      curImg.style.transform = `translate(${-100 * (isForwards)}%)`;
+    }
+    else{
+      curImg.style.transform = `translate(${-200 * (isForwards)}%)`;
+    }
+    
+    nextImage.style.transform = `translate(${-100 * (isForwards)}%)`;
+
+
+
+    setTimeout(() => {
+      curImg.style.translate = '100%';
+      curImg.classList = `singleImg ${(isForwards) ? 'leftSideImg' : 'rightSideImg'}`;
+      nextImage.style.translate = '100%';
+      nextImage.classList = 'singleImg currentImg';
+    }, 1500)
+    // curImg.classList = `singleImg ${(isForwards) ? 'leftSideImg' : 'rightSideImg'}`;
+    // nextImage.classList = 'singleImg currentImg';
+
+    // img.style.transform = `translate(${-100 * (indexToShow)}%)`;
   } else {
     // console.log("gall is null")
   }
 }
 
-function calcIndexScroll(imageContRef) {
-  if (imageContRef.current) {
-    const { scrollLeft, offsetWidth } = imageContRef.current;
-    // console.log("scrollLeft ",scrollLeft)
-    const index = Math.round(scrollLeft / (offsetWidth - 1)); // I think A better option would be to compare an image posioton to its original position.
-    return index;
+
+function positionImages(ImagesArr, curImgIdx) {
+  console.log('Positioning images, current index is ', curImgIdx);
+  ImagesArr.forEach((img, index) => {
+    if (index < curImgIdx) {
+      img.classList.add('leftSideImg');
+    } else if (index === curImgIdx) {
+      img.classList.add('currentImg');
+    } else if (index > curImgIdx) {
+      img.classList.add('rightSideImg');
+    }
+  })
+}
+
+
+function getTranslateX(curImg) {
+  const transformValue = window.getComputedStyle(curImg).transform;
+  let translateX = 0;
+
+  console.log('transformValue', curImg.style.transform)
+
+  if (transformValue !== 'none') {
+    const matrixValues = transformValue.match(/matrix\(([^)]+)\)/)[1].split(', ');
+    translateX = parseFloat(matrixValues[4]);
   }
-  return null;
-}
-
-function calcIndexTransition(ImgContainer) {
-  const ImagesArr = Array.from(ImgContainer.children);
-  // check translate value of 1st picture, to know which image is displayed.
-  const firstImage = ImagesArr[0];
-  const firstImgStyle = window.getComputedStyle(firstImage);
-  // parsing string to get translateX value
-  const transform = firstImgStyle.transform;
-  const matrixValues = transform.replace('matrix(', '').replace(')', '').split(', ');
-  const translateX = matrixValues.map(Number)[5];
-
-  let calculatedPos = Math.round(-translateX / firstImage.offsetWidth);
-
-  if (isNaN(calculatedPos))
-    calculatedPos = 0;
-}
-
-function calcIndexPosition(ImgContainer, startingXPos) {
-  const ImagesArr = Array.from(ImgContainer.children);
-  const firstImage = ImagesArr[0];
-  const { x, width } = firstImage.getBoundingClientRect()
-  const diff = -1*(x-startingXPos) ;
-  // console.log(` ${x} - ${startingXPos}  = ${diff}`)
-  const index = Math.round(diff / width);
-  return index;
+  return translateX;
 }
