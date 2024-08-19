@@ -21,15 +21,16 @@ $selectedColor: #e0e0e0;
     border-radius: 20px;
     padding: 20px 0;
     width: 600px;
-    margin: 0 auto;;
+    margin: 0 auto;
     position: relative;
+    scroll-behavior: smooth;
 }
 
 .galleryContainer .imageContainer {
     display: flex;
     justify-content: first baseline;
     width: 100%;
-    overflow-x: scroll;
+    overflow-x: hidden;
     scroll-snap-type: x mandatory;
     -ms-overflow-style: none;
     scroll-behavior: smooth;
@@ -45,8 +46,10 @@ $selectedColor: #e0e0e0;
     width: 100%;
     flex: 1 0 100%;
     scroll-snap-align: start;
-    scroll-margin: 5px;
     transition: transform 1.5s ease;
+    overflow-y: hidden;
+    // position: absolute;
+
 }
 
 
