@@ -15,35 +15,17 @@ export default function Gallery({ imgDirArr }) {
 
   const imageContRef = useRef(null);
   const galleryRef = useRef(null);
-  let startingX = 616;
 
 
-  if (moveBy !== 0)
-    translateImages(galleryRef.current, curImgIdx, setcurImgIdx, moveBy, setMoveBy)
+  useEffect(()=>{
+    if (moveBy !== 0)
+      translateImages(galleryRef.current, curImgIdx, setcurImgIdx, moveBy, setMoveBy)
+  },[curImgIdx,moveBy])
 
   useEffect(() => {
     const ImagesArr = Array.from(imageContRef.current.children);
-    positionImages(ImagesArr, curImgIdx)
+    positionImages(ImagesArr, 0)
   }, [])
-
-  // useEffect(() => {
-  //   // Adding a lister for transition finish
-  //   const transitionedHandler = () => {
-  //     // remove transforms 
-  //     // elements before curImgIdx are leftSideImg, current image is currentImg, ....
-  //     const ImagesArr = Array.from(imageContRef.current.children);
-  //     positionImages(ImagesArr, curImgIdx);
-  //   };
-
-  //   imageContRef.current.addEventListener('transitionend', transitionedHandler);
-
-
-  //   return ()=>{
-  //     imageContRef.current.addEventListener('transitionend',transitionedHandler);
-  //   }
-  // }, [curImgIdx])
-
-
 
   return (
     <div className='galleryContainer' ref={galleryRef}>
@@ -66,48 +48,13 @@ export default function Gallery({ imgDirArr }) {
 }
 
 export function translateImages(gallery, curImgIdx, setcurImgIdx, moveBy, setMoveBy) {
-  // if index is higher, move to the right then scroll forwards
-  // Make curImgIdx be current.
+  const newCurrent = curImgIdx+moveBy;
+  setcurImgIdx(newCurrent);
+  setMoveBy(0); //since we already handled the move we could reset it to zero
+  const imgArray = Array.from( gallery.querySelectorAll('.imageContainer div') );
 
-  if (gallery !== null && moveBy !== 0) {
-    setMoveBy(0);
-    setcurImgIdx((prev) => prev + moveBy);
-    const isForwards = (moveBy > 0) ? 1 : -1;
-    console.log(`current index is ${curImgIdx} want to move in the ${(moveBy > 0 ? 'forwards' : 'backwards')} next index is ${curImgIdx + moveBy}`)
-    const ImgContainer = gallery.querySelector("div.imageContainer");
-    const ImagesArr = Array.from(ImgContainer.children);
+  positionImages(imgArray,newCurrent);
 
-    const curImg = ImagesArr[curImgIdx];
-    const nextImage = ImagesArr[curImgIdx + moveBy];
-
-    console.log('curImg is', curImg)
-    console.log('nextImage is', nextImage)
-
-    if (curImgIdx === 0 ){
-      console.log('first image')
-      curImg.style.transform = `translate(${-100 * (isForwards)}%)`;
-    }
-    else{
-      curImg.style.transform = `translate(${-200 * (isForwards)}%)`;
-    }
-    
-    nextImage.style.transform = `translate(${-100 * (isForwards)}%)`;
-
-
-
-    setTimeout(() => {
-      curImg.style.translate = '100%';
-      curImg.classList = `singleImg ${(isForwards) ? 'leftSideImg' : 'rightSideImg'}`;
-      nextImage.style.translate = '100%';
-      nextImage.classList = 'singleImg currentImg';
-    }, 1500)
-    // curImg.classList = `singleImg ${(isForwards) ? 'leftSideImg' : 'rightSideImg'}`;
-    // nextImage.classList = 'singleImg currentImg';
-
-    // img.style.transform = `translate(${-100 * (indexToShow)}%)`;
-  } else {
-    // console.log("gall is null")
-  }
 }
 
 
@@ -115,25 +62,12 @@ function positionImages(ImagesArr, curImgIdx) {
   console.log('Positioning images, current index is ', curImgIdx);
   ImagesArr.forEach((img, index) => {
     if (index < curImgIdx) {
-      img.classList.add('leftSideImg');
+      img.style.transform = 'translate(-100%)';
     } else if (index === curImgIdx) {
-      img.classList.add('currentImg');
+      img.style.transform = 'translate(0)';
+      img.style.zIndex = 2;
     } else if (index > curImgIdx) {
-      img.classList.add('rightSideImg');
+      img.style.transform = 'translate(100%)';
     }
   })
-}
-
-
-function getTranslateX(curImg) {
-  const transformValue = window.getComputedStyle(curImg).transform;
-  let translateX = 0;
-
-  console.log('transformValue', curImg.style.transform)
-
-  if (transformValue !== 'none') {
-    const matrixValues = transformValue.match(/matrix\(([^)]+)\)/)[1].split(', ');
-    translateX = parseFloat(matrixValues[4]);
-  }
-  return translateX;
 }
