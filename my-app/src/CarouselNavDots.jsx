@@ -13,9 +13,9 @@ export default function CarouselNavDots({curImgIdx,setcurImgIdx,imagesLength,set
       {numberArr.map((num,index)=>{
         if(curImgIdx === index)
         {
-          return (  <DotComponenet rad={10} key={index} ind={index} curImgIdx={curImgIdx} setcurImgIdx={setcurImgIdx} setMoveBy={setMoveBy}/>)
+          return (  <DotComponenet rad={10} key={index} ind={index} curImgIdx={curImgIdx} setMoveBy={setMoveBy}/>)
         }else{
-          return (  <DotComponenet  key={index} ind={index} curImgIdx={curImgIdx} setcurImgIdx={setcurImgIdx} setMoveBy={setMoveBy}/>)
+          return (  <DotComponenet  key={index} ind={index} curImgIdx={curImgIdx} setMoveBy={setMoveBy}/>)
           
         }
       })}

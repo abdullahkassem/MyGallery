@@ -1,10 +1,10 @@
 import * as React from "react";
 
 
-const DotComponenet = ({ w = 20, h = 20, rad = 5, ind, curImgIdx, setcurImgIdx, setMoveBy }) => {
+const DotComponenet = ({ w = 20, h = 20, rad = 5, ind, curImgIdx, setMoveBy }) => {
 
   const dotClickHandler = function () {
-    const numOfMoves = (ind - curImgIdx); // calculate the numer of moves left or right. if +ve need to move forwards and vice versa
+    const numOfMoves = (ind - curImgIdx); // calculate the number of moves left or right. if +ve need to move forwards and vice versa
     setMoveBy(numOfMoves);
   }
 

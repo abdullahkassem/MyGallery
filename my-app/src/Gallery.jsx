@@ -28,7 +28,7 @@ export default function Gallery({ imgDirArr }) {
 
   return (
     <div className='galleryContainer' ref={galleryRef}>
-      <SwitchImgButton direction={"backwards"} curImgIdx={curImgIdx} setcurImgIdx={setcurImgIdx} imagesLength={imgDirArr.length} setMoveBy={setMoveBy} />
+      <SwitchImgButton direction={"backwards"} curImgIdx={curImgIdx} imagesLength={imgDirArr.length} setMoveBy={setMoveBy} />
 
       <div ref={imageContRef} className="imageContainer" >
         {imgDirArr.map((image, index) => {
@@ -38,7 +38,7 @@ export default function Gallery({ imgDirArr }) {
         })}
       </div>
 
-      <SwitchImgButton direction={"forwards"} curImgIdx={curImgIdx} setcurImgIdx={setcurImgIdx} imagesLength={imgDirArr.length} setMoveBy={setMoveBy} />
+      <SwitchImgButton direction={"forwards"} curImgIdx={curImgIdx} imagesLength={imgDirArr.length} setMoveBy={setMoveBy} />
       <CarouselNavDots curImgIdx={curImgIdx} setcurImgIdx={setcurImgIdx} imagesLength={imgDirArr.length} setMoveBy={setMoveBy} />
 
 

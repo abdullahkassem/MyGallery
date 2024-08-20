@@ -4,7 +4,7 @@ import rightArrow from './assets/right-arrow.png';
 import leftArrow from './assets/left-arrow.png';
 
 
-export default function SwitchImgButton({ direction, curImgIdx, setcurImgIdx, imagesLength = 99 , setMoveBy}) {
+export default function SwitchImgButton({ direction, curImgIdx, imagesLength = 99 , setMoveBy}) {
 
   let iconPath = crossSign;
   let handler = function () { console.log("Wrong direction used.") };
