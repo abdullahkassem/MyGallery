@@ -36,7 +36,7 @@ export default function SwitchImgButton({ direction, curImgIdx, imagesLength = 9
 
 
   return (
-    <button className='SwitchingButton' onClick={handler} title='testingGallery'>
+    <button className='SwitchingButton' onClick={handler} title='navButtonTitle'>
       <img className='SwitchingImg' src={iconPath} alt="direction signs" />
     </button>
   )

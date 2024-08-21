@@ -16,7 +16,7 @@
     "build": "react-scripts build",
     "test:unit": "react-scripts test --coverage",
     "eject": "react-scripts eject",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test "
   },
   "eslintConfig": {
     "extends": [
@@ -32,7 +32,10 @@
       "<rootDir>/src/main",
       "<rootDir>/src/App",
       "<rootDir>/src/vite-env.d copy.ts"
-    ]
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|svg)$": "<rootDir>/__mocks__/fileMock.js"
+    }
   },
   "browserslist": {
     "production": [
@@ -47,6 +50,7 @@
     ]
   },
   "devDependencies": {
-    "@playwright/test": "^1.46.0"
+    "@playwright/test": "^1.46.0",
+    "identity-obj-proxy": "^3.0.0"
   }
 }

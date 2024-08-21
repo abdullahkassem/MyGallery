@@ -6,7 +6,7 @@ test('test if page is loaded', async ({ page }) => {
     expect(title).toBe('Carousel Gallery');
 });
 
-test('checks that the carousel has rendered ', async ({ page }) => {
+test('that the carousel has rendered ', async ({ page }) => {
     await page.goto('');
     const carousel = await page.locator('.galleryContainer');
     await expect(carousel).toBeVisible();
@@ -52,7 +52,15 @@ test('Check that if button is pressed multiple times it does not go out of bound
 
     // then press once backwards and image should be the 2nd to last aka the 5th
     await backwardsButton.click();
-    const expectedMessage="curImgIndex: 4";
-    console.log('last console message',consoleMessages.at(-1));
-    expect(consoleMessages.at(-1)).toBe(expectedMessage);
+    const imgArr = page.locator('div.imageContainer > div');
+    const imgCount = await imgArr.count();
+    const beforeLastImg = imgArr.nth(imgCount -2);
+    const inlineStyle = await beforeLastImg.evaluate(el => el.style.cssText);
+      
+    console.log('Element inlineStyle:', inlineStyle);
+      
+    
+
+    // console.log('beforeLastImg',beforeLastImg)
+    expect(inlineStyle).toContain('transform: translate(0px)');
 })

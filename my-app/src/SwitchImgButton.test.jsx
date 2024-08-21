@@ -10,6 +10,7 @@ import crossSign from './assets/cross-sign.png';
 
 describe('Button Component', () => {
     const setcurImgIdxMock = jest.fn();
+    const setMoveByMock = jest.fn();
 
     afterEach(() => {
         jest.clearAllMocks();
@@ -29,7 +30,7 @@ describe('Button Component', () => {
         const imageSrc = leftArr;
         const altText = 'direction signs';
 
-        render(<SwitchImgButton direction="backwards" curImgIdx={0} setcurImgIdx={setcurImgIdxMock} />);
+        render(<SwitchImgButton direction="backwards" curImgIdx={0} imagesLength={6} setMoveBy={setMoveByMock} />);
 
         // Check if the image is rendered
         const imgElement = screen.getByAltText(altText);
@@ -43,7 +44,7 @@ describe('Button Component', () => {
         const imageSrc = crossSign;
         const altText = 'direction signs';
 
-        render(<SwitchImgButton direction="gibberish" curImgIdx={0} setcurImgIdx={setcurImgIdxMock} />);
+        render(<SwitchImgButton direction="gibberish" curImgIdx={0} imagesLength={6} setMoveBy={setMoveByMock} />);
 
         // Check if the image is rendered
         const imgElement = screen.getByAltText(altText);
@@ -53,21 +54,17 @@ describe('Button Component', () => {
     });
 
     test('test that clicking calls the handler for the backwards direction ', () => {
-
-        render(<SwitchImgButton direction="backwards" curImgIdx={0} setcurImgIdx={setcurImgIdxMock} />);
-        const button = screen.getByTitle('testingGallery');
+        
+        const curImgIdx = 1;
+        render(<SwitchImgButton direction="backwards" curImgIdx={curImgIdx} imagesLength={6} setMoveBy={setMoveByMock} />);
+        const button = screen.getByTitle('navButtonTitle');
 
         fireEvent.click(button);
 
-        expect(setcurImgIdxMock).toHaveBeenCalled();
-        expect(setcurImgIdxMock).toHaveBeenCalledWith(expect.any(Function));
-
-        setcurImgIdxMock.mock.calls; // Simulate decrement to -1
-        const singleImgDivs = document.querySelectorAll('.imageContainer .singleImg');
-        singleImgDivs.forEach((img, index) => {
-            expect(img).toHaveStyle(`transform: translate(${-100*(0)+100}%)`);
-            
-        });
+        expect(setMoveByMock).toHaveBeenCalledWith(-1);
+        
+        
+      
     })
 
     test('renders a button with forwards direction and checks if image is correct', () => {
@@ -75,7 +72,7 @@ describe('Button Component', () => {
         const imageSrc = rightArr;
         const altText = 'direction signs';
 
-        render(<SwitchImgButton direction="forwards" curImgIdx={0} setcurImgIdx={setcurImgIdxMock} />);
+        render(<SwitchImgButton direction="forwards" curImgIdx={0} imagesLength={6} setMoveBy={setMoveByMock}/>);
 
         // Check if the image is rendered
         const imgElement = screen.getByAltText(altText);
@@ -85,19 +82,33 @@ describe('Button Component', () => {
 
     });
     test('test that clicking calls the handler for the forwards direction ', () => {
-
-        render(<SwitchImgButton direction="forwards" curImgIdx={0} setcurImgIdx={setcurImgIdxMock} />);
-        const button = screen.getByTitle('testingGallery');
+        const curImgIdx = 1;
+        render(<SwitchImgButton direction="forwards" curImgIdx={0}  setMoveBy={setMoveByMock}/>);
+        const button = screen.getByTitle('navButtonTitle');
 
         fireEvent.click(button);
 
-        expect(setcurImgIdxMock).toHaveBeenCalled();
-        expect(setcurImgIdxMock).toHaveBeenCalledWith(expect.any(Function));
+        expect(setMoveByMock).toHaveBeenCalledWith(1);
 
-        setcurImgIdxMock.mock.calls; // Simulate increment to 1
-        const singleImgDivs = document.querySelectorAll('.imageContainer .singleImg');
-        singleImgDivs.forEach((img, index) => {
-            expect(img).toHaveStyle(`transform: translate(${-100 * (0+1)}%)`);
-        });
+    })
+
+    test('Test that the carousel will not go out of bounds, higher than num of images', () => {
+        const curImgIdx = 5;
+        render(<SwitchImgButton direction="forwards" curImgIdx={curImgIdx} imagesLength={6} setMoveBy={setMoveByMock}/>);
+        const button = screen.getByTitle('navButtonTitle');
+        fireEvent.click(button);
+
+        expect(setMoveByMock).not.toHaveBeenCalled();
+
+    })
+
+    test('Test that the carousel will not go out of bounds, lower than 0', () => {
+        const curImgIdx = 0;
+        render(<SwitchImgButton direction="backwards" curImgIdx={curImgIdx} imagesLength={6} setMoveBy={setMoveByMock} />);
+        const button = screen.getByTitle('navButtonTitle');
+        fireEvent.click(button);
+
+        expect(setMoveByMock).not.toHaveBeenCalled();
+
     })
 });

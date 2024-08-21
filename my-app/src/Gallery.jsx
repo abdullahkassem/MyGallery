@@ -8,9 +8,9 @@ import CarouselNavDots from './CarouselNavDots';
 
 
 export default function Gallery({ imgDirArr }) {
+
   const [curImgIdx, setcurImgIdx] = useState(0); // state that tracks the image displayed.
   const [moveBy, setMoveBy] = useState(0); // 1 is forwards, -1 is backwards
-
 
   const imageContRef = useRef(null);
   const galleryRef = useRef(null);
@@ -18,7 +18,7 @@ export default function Gallery({ imgDirArr }) {
 
   useEffect(()=>{
     if (moveBy !== 0)
-      translateImages(galleryRef.current, curImgIdx, setcurImgIdx, moveBy, setMoveBy)
+      translateImages(galleryRef.current, curImgIdx, setcurImgIdx, moveBy, setMoveBy);
   },[curImgIdx,moveBy])
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function Gallery({ imgDirArr }) {
     <div className='galleryContainer' ref={galleryRef}>
       <SwitchImgButton direction={"backwards"} curImgIdx={curImgIdx} imagesLength={imgDirArr.length} setMoveBy={setMoveBy} />
 
-      <div ref={imageContRef} className="imageContainer" >
+      <div ref={imageContRef} className="imageContainer" data-testid='image-container' >
         {imgDirArr.map((image, index) => {
           return (
             <GalleryImg key={index} img={image} ord={index} />
@@ -66,11 +66,13 @@ function positionImages(ImagesArr, curImgIdx) {
   ImagesArr.forEach((img, index) => {
     if (index < curImgIdx) {
       img.style.transform = 'translate(-100%)';
+      // console.log('curImgIdx is more than index')
     } else if (index === curImgIdx) {
       img.style.transform = 'translate(0)';
       img.style.zIndex = 2;
-    } else if (index > curImgIdx) {
+    } else  {
       img.style.transform = 'translate(100%)';
+      // console.log('curImgIdx is less than index')
     }
   })
 }
